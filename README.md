@@ -316,7 +316,7 @@ This project demonstrates proficiency in several advanced software engineering p
 
 ## 👤 Author
 
-**Senior Software Engineer**  
+**Software Engineer**  
 *Building enterprise-grade financial technology solutions.*
 
 - GitHub: [@rohanG2607](https://github.com/rohanG2607)
