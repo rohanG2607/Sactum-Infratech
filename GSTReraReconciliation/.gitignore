@@ -1,0 +1,106 @@
+## =========================================================================
+## ASP.NET MVC 5 (.NET Framework 4.8) - Production .gitignore
+## =========================================================================
+
+# ==========================================================================
+# Visual Studio & IDEs
+# ==========================================================================
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+_ReSharper*/
+*.DotSettings.user
+
+# ==========================================================================
+# Build Output & Artifacts
+# ==========================================================================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+
+# ==========================================================================
+# Database Files (SQL Server LocalDB / AttachDb)
+# ==========================================================================
+*.mdf
+*.ldf
+*.ndf
+*.bak
+
+# ==========================================================================
+# Uploaded & Processed Excel Files
+# ==========================================================================
+# Ignore all files in the Uploads directory...
+GSTReraReconciliation/App_Data/Uploads/*
+# ...except for the .gitkeep file to maintain the folder structure
+!GSTReraReconciliation/App_Data/Uploads/.gitkeep
+*.xls
+*.xlsx
+*.xlsm
+
+# ==========================================================================
+# Packages & Dependencies
+# ==========================================================================
+# Ignore the entire packages folder except for build targets
+packages/
+!packages/build/
+*.nupkg
+*.nuget.props
+*.nuget.targets
+
+# ==========================================================================
+# Temp Files, Caches & Logs
+# ==========================================================================
+*.tmp
+*.temp
+*.cache
+*.log
+[Ll]ogs/
+[Ll]ogFiles/
+
+# ==========================================================================
+# Publish Artifacts
+# ==========================================================================
+[Pp]ublish/
+[Pp]ublishProfiles/
+[Aa]ppPackages/
+
+# ==========================================================================
+# OS Generated Files
+# ==========================================================================
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ==========================================================================
+# Secrets & Configuration Keys
+# ==========================================================================
+*.pfx
+*.publishsettings
+secrets.json
+
+# ==========================================================================
+# Local Tools (Specific to this repository)
+# ==========================================================================
+check_db.exe
+SqlLocalDB.msi
+
+# ==========================================================================
+# EXPLICITLY KEPT FILES (White-listed)
+# ==========================================================================
+!README.md
+!Documentation/
+!GSTReraReconciliation/SQL/
+!GSTReraReconciliation/Migrations/
+!GSTReraReconciliation/packages.config
+!GSTReraReconciliation/Web.config
+!GSTReraReconciliation/Web.Debug.config
+!GSTReraReconciliation/Web.Release.config

@@ -1,0 +1,510 @@
+@model GSTReraReconciliation.ViewModels.ReportFilterViewModel
+@{
+    ViewBag.Title = "Reports";
+}
+
+<!-- ================================================================ -->
+<!-- Page Header                                                       -->
+<!-- ================================================================ -->
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-1"><i class="bi bi-file-earmark-bar-graph me-2"></i>Reconciliation Reports</h2>
+        <p class="text-muted mb-0">Filter, search, sort, and export detailed reconciliation results.</p>
+    </div>
+    <div class="col-md-6 text-md-end">
+        <!-- Export Dropdown -->
+        <div class="btn-group" id="exportDropdown">
+            <a href="@Url.Action("ExportExcel", "Reports", new {
+                         statusFilter = Model.StatusFilter,
+                         search = Model.Search,
+                         sessionId = Model.SessionId })"
+               class="btn btn-success" id="exportCurrentBtn">
+                <i class="bi bi-file-earmark-excel me-1"></i>Export
+                @if (!string.IsNullOrEmpty(Model.StatusFilter))
+                {
+                    @GSTReraReconciliation.Models.ReconciliationStatus.DisplayLabel(Model.StatusFilter)
+                }
+                else
+                {
+                    <text>Current View</text>
+                }
+            </a>
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown" aria-expanded="false" id="exportDropdownToggle">
+                <span class="visually-hidden">Toggle export options</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+                <li><h6 class="dropdown-header"><i class="bi bi-download me-1"></i>Export to Excel</h6></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <a class="dropdown-item" id="exportAllLink"
+                       href="@Url.Action("ExportAll", "Reports", new { sessionId = Model.SessionId })">
+                        <i class="bi bi-grid-3x3-gap text-primary me-2"></i>
+                        <strong>Export All</strong> <small class="text-muted">(Multi-Sheet)</small>
+                        <span class="badge bg-primary float-end">@Model.AllCount</span>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportMatched", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-check-circle text-success me-2"></i>Matched Records
+                        <span class="badge bg-success float-end">@Model.MatchedCount</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportLikelyMatch", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-patch-check text-primary me-2"></i>Likely Match
+                        <span class="badge bg-primary float-end">@Model.LikelyMatchCount</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportPossibleMatch", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-question-circle text-secondary me-2"></i>Possible Match
+                        <span class="badge bg-secondary float-end">@Model.PossibleMatchCount</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportMismatch", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-exclamation-triangle text-warning me-2"></i>GST Mismatch
+                        <span class="badge bg-warning text-dark float-end">@Model.GstMismatchCount</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportMissingInGst", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-bank text-danger me-2"></i>Missing in GST
+                        <span class="badge bg-danger float-end">@Model.MissingInGstCount</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ExportMissingInRera", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+                        <i class="bi bi-receipt text-dark me-2"></i>Missing in RERA
+                        <span class="badge bg-dark float-end">@Model.MissingInReraCount</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Session Filter + Search                                           -->
+<!-- ================================================================ -->
+<div class="row mb-3 g-2">
+    <div class="col-md-4">
+        <form method="get" action="@Url.Action("Index", "Reports")" id="sessionForm">
+            <input type="hidden" name="statusFilter" value="@Model.StatusFilter" />
+            <input type="hidden" name="search" value="@Model.Search" />
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-calendar3"></i></span>
+                <select name="sessionId" class="form-select" onchange="this.form.submit()" id="reportSessionSelect">
+                    <option value="">All Sessions</option>
+                    @foreach (var session in Model.Sessions)
+                    {
+                        <option value="@session.Id" @(Model.SessionId == session.Id ? "selected" : "")>
+                            #@session.Id &mdash; @session.UploadDate.ToString("dd MMM yyyy HH:mm")
+                        </option>
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 ms-auto">
+        <form method="get" action="@Url.Action("Index", "Reports")" id="searchForm">
+            <input type="hidden" name="statusFilter" value="@Model.StatusFilter" />
+            <input type="hidden" name="sessionId" value="@Model.SessionId" />
+            <input type="hidden" name="sortBy" value="@Model.SortBy" />
+            <input type="hidden" name="sortDir" value="@Model.SortDir" />
+            <div class="input-group">
+                <input type="text" name="search" class="form-control"
+                       placeholder="Search by RERA or GST name..."
+                       value="@Model.Search" id="searchInput" />
+                <button type="submit" class="btn btn-primary" id="searchBtn">
+                    <i class="bi bi-search"></i>
+                </button>
+                @if (!string.IsNullOrEmpty(Model.Search))
+                {
+                    <a href="@Url.Action("Index", "Reports", new { statusFilter = Model.StatusFilter, sessionId = Model.SessionId })"
+                       class="btn btn-outline-secondary" id="clearSearchBtn" title="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Status Filter Tabs (7 tabs)                                       -->
+<!-- ================================================================ -->
+<ul class="nav nav-tabs mb-3" id="statusTabs">
+    @{
+        string allActive = string.IsNullOrEmpty(Model.StatusFilter) ? "active" : "";
+    }
+    <li class="nav-item">
+        <a class="nav-link @allActive" id="tabAll"
+           href="@Url.Action("Index", "Reports", new { search = Model.Search, sessionId = Model.SessionId })">
+            All <span class="badge bg-primary rounded-pill ms-1">@Model.AllCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "MATCHED" ? "active" : "")" id="tabMatched"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "MATCHED", search = Model.Search, sessionId = Model.SessionId })">
+            Matched <span class="badge bg-success rounded-pill ms-1">@Model.MatchedCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "LIKELY_MATCH" ? "active" : "")" id="tabLikelyMatch"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "LIKELY_MATCH", search = Model.Search, sessionId = Model.SessionId })">
+            Likely Match <span class="badge bg-primary rounded-pill ms-1">@Model.LikelyMatchCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "POSSIBLE_MATCH" ? "active" : "")" id="tabPossibleMatch"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "POSSIBLE_MATCH", search = Model.Search, sessionId = Model.SessionId })">
+            Possible Match <span class="badge bg-secondary rounded-pill ms-1">@Model.PossibleMatchCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "GST_MISMATCH" ? "active" : "")" id="tabMismatch"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "GST_MISMATCH", search = Model.Search, sessionId = Model.SessionId })">
+            GST Mismatch <span class="badge bg-warning text-dark rounded-pill ms-1">@Model.GstMismatchCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "MISSING_IN_GST" ? "active" : "")" id="tabMissingInGst"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "MISSING_IN_GST", search = Model.Search, sessionId = Model.SessionId })">
+            Missing in GST <span class="badge bg-danger rounded-pill ms-1">@Model.MissingInGstCount</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.StatusFilter == "MISSING_IN_RERA" ? "active" : "")" id="tabMissingInRera"
+           href="@Url.Action("Index", "Reports", new { statusFilter = "MISSING_IN_RERA", search = Model.Search, sessionId = Model.SessionId })">
+            Missing in RERA <span class="badge bg-dark rounded-pill ms-1">@Model.MissingInReraCount</span>
+        </a>
+    </li>
+</ul>
+
+<!-- ================================================================ -->
+<!-- Results Table                                                     -->
+<!-- ================================================================ -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-sm align-middle mb-0" id="reportsTable">
+                <thead>
+                    <tr class="table-light">
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        @{
+                            // Build sort URL (C#5-compatible delegate)
+                            Func<string, string> SortUrl = delegate(string col) {
+                                return Url.Action("Index", "Reports", new {
+                                    statusFilter = Model.StatusFilter,
+                                    search = Model.Search,
+                                    sessionId = Model.SessionId,
+                                    sortBy = col,
+                                    sortDir = Model.SortDirFor(col),
+                                    page = 1,
+                                    pageSize = Model.PageSize
+                                });
+                            };
+                        }
+                        <th>
+                            <a href="@SortUrl("Status")" class="text-decoration-none text-dark">
+                                Status <i class="bi @Model.SortIcon("Status")"></i>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="@SortUrl("RERAName")" class="text-decoration-none text-dark">
+                                RERA Name <i class="bi @Model.SortIcon("RERAName")"></i>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="@SortUrl("GSTName")" class="text-decoration-none text-dark">
+                                GST Name <i class="bi @Model.SortIcon("GSTName")"></i>
+                            </a>
+                        </th>
+                        <th class="text-end">
+                            <a href="@SortUrl("ExpectedGST")" class="text-decoration-none text-dark">
+                                Expected GST (&#x20B9;) <i class="bi @Model.SortIcon("ExpectedGST")"></i>
+                            </a>
+                        </th>
+                        <th class="text-end">
+                            <a href="@SortUrl("ActualGST")" class="text-decoration-none text-dark">
+                                Actual GST (&#x20B9;) <i class="bi @Model.SortIcon("ActualGST")"></i>
+                            </a>
+                        </th>
+                        <th class="text-end">
+                            <a href="@SortUrl("Difference")" class="text-decoration-none text-dark">
+                                Difference <i class="bi @Model.SortIcon("Difference")"></i>
+                            </a>
+                        </th>
+                        <th class="text-center">
+                            <a href="@SortUrl("NameScore")" class="text-decoration-none text-dark">
+                                Name <i class="bi @Model.SortIcon("NameScore")"></i>
+                            </a>
+                        </th>
+                        <th class="text-center">
+                            <a href="@SortUrl("AmountScore")" class="text-decoration-none text-dark">
+                                Amt <i class="bi @Model.SortIcon("AmountScore")"></i>
+                            </a>
+                        </th>
+                        <th class="text-center">
+                            <a href="@SortUrl("FinalScore")" class="text-decoration-none text-dark">
+                                Final <i class="bi @Model.SortIcon("FinalScore")"></i>
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Results != null && Model.Results.Any())
+                    {
+                        int sno = Model.StartRecord;
+                        foreach (var r in Model.Results)
+                        {
+                            string rowClass, badgeClass;
+                            switch (r.Status)
+                            {
+                                case "MATCHED":
+                                    rowClass = "table-success"; badgeClass = "bg-success"; break;
+                                case "LIKELY_MATCH":
+                                    rowClass = "table-primary"; badgeClass = "bg-primary"; break;
+                                case "GST_MISMATCH":
+                                    rowClass = "table-warning"; badgeClass = "bg-warning text-dark"; break;
+                                case "POSSIBLE_MATCH":
+                                    rowClass = ""; badgeClass = "bg-secondary"; break;
+                                case "MISSING_IN_GST":
+                                case "RERA_NOT_GST":
+                                    rowClass = "table-danger"; badgeClass = "bg-danger"; break;
+                                case "MISSING_IN_RERA":
+                                case "GST_NOT_RERA":
+                                    rowClass = ""; badgeClass = "bg-dark"; break;
+                                default:
+                                    rowClass = ""; badgeClass = "bg-secondary"; break;
+                            }
+
+                            decimal diff = r.ExpectedGST - r.ActualGST;
+                            string displayLabel = GSTReraReconciliation.Models.ReconciliationStatus.DisplayLabel(r.Status);
+
+                            <tr class="@rowClass">
+                                <td class="ps-3 text-muted">@sno</td>
+                                <td><span class="badge @badgeClass">@displayLabel</span></td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(r.RERAName))
+                                    {
+                                        @r.RERAName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fst-italic">&mdash;</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(r.GSTName))
+                                    {
+                                        @r.GSTName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fst-italic">&mdash;</span>
+                                    }
+                                </td>
+                                <td class="text-end font-monospace">@r.ExpectedGST.ToString("N2")</td>
+                                <td class="text-end font-monospace">@r.ActualGST.ToString("N2")</td>
+                                <td class="text-end font-monospace fw-semibold @(diff != 0 ? "text-danger" : "text-success")">
+                                    @diff.ToString("N2")
+                                </td>
+                                <td class="text-center">
+                                    @if (r.NameScore > 0)
+                                    {
+                                        <span class="@(r.NameScore >= 90 ? "text-success" : r.NameScore >= 70 ? "text-info" : "text-muted") fw-semibold">@r.NameScore</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">&mdash;</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (r.AmountScore > 0)
+                                    {
+                                        <span class="@(r.AmountScore >= 90 ? "text-success" : r.AmountScore >= 70 ? "text-info" : "text-muted") fw-semibold">@r.AmountScore</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">&mdash;</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (r.FinalScore > 0)
+                                    {
+                                        <span class="badge @(r.FinalScore >= 90 ? "bg-success" : r.FinalScore >= 70 ? "bg-info" : "bg-secondary") bg-opacity-75">@r.FinalScore%</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">&mdash;</span>
+                                    }
+                                </td>
+                            </tr>
+                            sno++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.4;"></i>
+                                    <p class="mt-3 mb-2 fs-5">No records found</p>
+                                    <p class="mb-0">
+                                        @if (!string.IsNullOrEmpty(Model.Search))
+                                        {
+                                            <text>No results match your search term "<strong>@Model.Search</strong>".</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Upload files and run a comparison to see results here.</text>
+                                        }
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- Pagination Footer                                                 -->
+    <!-- ================================================================ -->
+    @if (Model.TotalRecords > 0)
+    {
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center flex-wrap py-3 gap-2">
+            <div class="text-muted small">
+                Showing <strong>@Model.StartRecord</strong>&ndash;<strong>@Model.EndRecord</strong>
+                of <strong>@Model.TotalRecords</strong> records
+            </div>
+            <nav aria-label="Report pagination" id="reportPagination">
+                <ul class="pagination pagination-sm mb-0">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="@Url.Action("Index", "Reports", new {
+                                         statusFilter = Model.StatusFilter,
+                                         search = Model.Search,
+                                         sessionId = Model.SessionId,
+                                         sortBy = Model.SortBy,
+                                         sortDir = Model.SortDir,
+                                         page = Model.Page - 1,
+                                         pageSize = Model.PageSize })">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-left"></i></span></li>
+                    }
+
+                    @{
+                        int startPage = Math.Max(1, Model.Page - 2);
+                        int endPage = Math.Min(Model.TotalPages, Model.Page + 2);
+                    }
+
+                    @if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", "Reports", new {
+                                         statusFilter = Model.StatusFilter, search = Model.Search,
+                                         sessionId = Model.SessionId, sortBy = Model.SortBy,
+                                         sortDir = Model.SortDir, page = 1, pageSize = Model.PageSize })">1</a>
+                        </li>
+                        if (startPage > 2)
+                        {
+                            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                        }
+                    }
+
+                    @for (int p = startPage; p <= endPage; p++)
+                    {
+                        if (p == Model.Page)
+                        {
+                            <li class="page-item active"><span class="page-link">@p</span></li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", "Reports", new {
+                                             statusFilter = Model.StatusFilter, search = Model.Search,
+                                             sessionId = Model.SessionId, sortBy = Model.SortBy,
+                                             sortDir = Model.SortDir, page = p, pageSize = Model.PageSize })">@p</a>
+                            </li>
+                        }
+                    }
+
+                    @if (endPage < Model.TotalPages)
+                    {
+                        if (endPage < Model.TotalPages - 1)
+                        {
+                            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", "Reports", new {
+                                         statusFilter = Model.StatusFilter, search = Model.Search,
+                                         sessionId = Model.SessionId, sortBy = Model.SortBy,
+                                         sortDir = Model.SortDir, page = Model.TotalPages, pageSize = Model.PageSize })">@Model.TotalPages</a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="@Url.Action("Index", "Reports", new {
+                                         statusFilter = Model.StatusFilter,
+                                         search = Model.Search,
+                                         sessionId = Model.SessionId,
+                                         sortBy = Model.SortBy,
+                                         sortDir = Model.SortDir,
+                                         page = Model.Page + 1,
+                                         pageSize = Model.PageSize })">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-right"></i></span></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+<!-- Error message from export -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-3" id="exportErrorAlert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+    </div>
+}
+
+<style>
+    .font-monospace {
+        font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+        font-size: 0.88rem;
+    }
+    .nav-tabs .nav-link {
+        font-weight: 500;
+        color: #6c757d;
+        padding: 0.6rem 1rem;
+    }
+    .nav-tabs .nav-link.active {
+        font-weight: 600;
+        border-bottom: 3px solid #0d6efd;
+    }
+    .nav-tabs .nav-link:hover:not(.active) {
+        border-bottom: 3px solid #dee2e6;
+    }
+</style>

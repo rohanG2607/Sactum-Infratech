@@ -1,0 +1,14 @@
+@model GSTReraReconciliation.ViewModels.UploadViewModel
+@{
+    Layout = null;
+}
+
+<!-- Partial view for upload status (used in AJAX scenarios) -->
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert @(Model.IsSuccess ? "alert-success" : "alert-danger") alert-dismissible fade show" role="alert">
+        <i class="bi @(Model.IsSuccess ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill") me-2"></i>
+        @Model.StatusMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

@@ -1,0 +1,233 @@
+/* ================================================================
+   GST RERA Reconciliation — Custom Styles
+   Sactum Infratech
+   ================================================================ */
+
+/* --- Base & Typography --- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f5f7fa;
+    color: #2c3e50;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main.container {
+    flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+/* --- Navbar Customization --- */
+.navbar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+    border-bottom: 3px solid #e94560;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0.6rem 1rem !important;
+    border-radius: 6px;
+    margin: 0 2px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* --- Card Styles --- */
+.card {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+}
+
+/* --- Hero Section --- */
+#heroSection {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-radius: 16px !important;
+}
+
+/* --- Summary Cards (Dashboard) --- */
+#summaryCards .card {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+#summaryCards .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+#summaryCards h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* --- Table Styles --- */
+.table {
+    font-size: 0.92rem;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05) !important;
+}
+
+.table-success {
+    background-color: rgba(40, 167, 69, 0.08) !important;
+}
+
+.table-warning {
+    background-color: rgba(255, 193, 7, 0.08) !important;
+}
+
+.table-danger {
+    background-color: rgba(220, 53, 69, 0.08) !important;
+}
+
+/* --- Badge Styles --- */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.7em;
+    border-radius: 6px;
+    font-size: 0.8em;
+}
+
+/* --- Button Styles --- */
+.btn {
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4299 100%);
+}
+
+/* --- Form Styles --- */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #dee2e6;
+    padding: 0.6rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.2);
+}
+
+.form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    color: #495057;
+}
+
+/* --- Alert Styles --- */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* --- Footer --- */
+footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+    border-top: 3px solid #e94560;
+}
+
+/* --- Pagination --- */
+.pagination .page-link {
+    border-radius: 8px;
+    margin: 0 2px;
+    font-weight: 500;
+    color: #667eea;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+}
+
+/* --- Workflow Steps (Home) --- */
+#workflowSection .bg-light {
+    border-radius: 14px;
+    transition: transform 0.2s ease;
+}
+
+#workflowSection .bg-light:hover {
+    transform: translateY(-3px);
+}
+
+/* --- Upload Drag Area --- */
+input[type="file"] {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+    border-color: #667eea;
+    background-color: rgba(102, 126, 234, 0.03);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    #heroSection {
+        padding: 2rem !important;
+    }
+
+    #heroSection h1 {
+        font-size: 1.5rem;
+    }
+
+    #summaryCards h3 {
+        font-size: 1.4rem;
+    }
+
+    .table {
+        font-size: 0.82rem;
+    }
+}

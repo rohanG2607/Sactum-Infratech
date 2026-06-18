@@ -1,0 +1,525 @@
+﻿@model GSTReraReconciliation.ViewModels.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<!-- ================================================================ -->
+<!-- Page Header + Session Filter                                      -->
+<!-- ================================================================ -->
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-1"><i class="bi bi-speedometer2 me-2"></i>Reconciliation Dashboard</h2>
+        <p class="text-muted mb-0">
+            @if (Model.SelectedSessionId.HasValue)
+            {
+                <text>Filtered to Session <strong>#@Model.SelectedSessionId</strong></text>
+            }
+            else
+            {
+                <text>Showing aggregate data across all sessions</text>
+            }
+        </p>
+    </div>
+    <div class="col-md-6">
+        <form method="get" action="@Url.Action("Index", "Dashboard")" class="d-flex justify-content-md-end align-items-center gap-2" id="sessionFilterForm">
+            <label for="sessionSelect" class="form-label mb-0 fw-semibold text-nowrap">Session:</label>
+            <select name="sessionId" id="sessionSelect" class="form-select" style="max-width: 280px;" onchange="this.form.submit()">
+                <option value="">All Sessions</option>
+                @foreach (var session in Model.Sessions)
+                {
+                    <option value="@session.Id" @(Model.SelectedSessionId == session.Id ? "selected" : "")>
+                        #@session.Id &mdash; @session.UploadDate.ToString("dd MMM yyyy HH:mm")
+                    </option>
+                }
+            </select>
+        </form>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Top Row: Record Counts + Match Rate                               -->
+<!-- ================================================================ -->
+<div class="row g-3 mb-4" id="recordCountCards">
+    <!-- Total RERA Records -->
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100 card-hover" id="cardTotalRera">
+            <div class="card-body d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <div class="icon-circle bg-warning-subtle">
+                        <i class="bi bi-bank2 text-warning fs-4"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">@Model.TotalRERARecords</h3>
+                    <small class="text-muted text-uppercase fw-semibold ls-wide">Total RERA Records</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total GST Records -->
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100 card-hover" id="cardTotalGst">
+            <div class="card-body d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <div class="icon-circle bg-info-subtle">
+                        <i class="bi bi-receipt text-info fs-4"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">@Model.TotalGSTRecords</h3>
+                    <small class="text-muted text-uppercase fw-semibold ls-wide">Total GST Records</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Rate -->
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100 card-hover" id="cardMatchRate">
+            <div class="card-body d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <div class="icon-circle bg-success-subtle">
+                        <i class="bi bi-pie-chart-fill text-success fs-4"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0 text-success">@Model.MatchPercentage%</h3>
+                    <small class="text-muted text-uppercase fw-semibold ls-wide">Match Rate</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Difference -->
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100 card-hover" id="cardTotalDiff">
+            <div class="card-body d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <div class="icon-circle bg-primary-subtle">
+                        <i class="bi bi-currency-rupee text-primary fs-4"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">&#x20B9;@Model.TotalDifference.ToString("N2")</h3>
+                    <small class="text-muted text-uppercase fw-semibold ls-wide">Total GST Difference</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Status Cards Row: 6 Reconciliation Statuses                       -->
+<!-- ================================================================ -->
+<div class="row g-3 mb-5" id="statusCards">
+    <!-- MATCHED -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-matched" id="cardMatched">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.MatchedCount</h2>
+                <span class="badge bg-success px-3 py-2">Matched</span>
+                <div class="mt-2">
+                    <small class="text-muted">Exact name and amount match confirmed</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIKELY MATCH -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-likely" id="cardLikelyMatch">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.LikelyMatchCount</h2>
+                <span class="badge bg-primary px-3 py-2">Likely Match</span>
+                <div class="mt-2">
+                    <small class="text-muted">High confidence name or amount match</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POSSIBLE MATCH -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-possible" id="cardPossibleMatch">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-question-circle-fill"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.PossibleMatchCount</h2>
+                <span class="badge bg-secondary px-3 py-2">Possible Match</span>
+                <div class="mt-2">
+                    <small class="text-muted">Partial name similarity detected &mdash; needs review</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GST MISMATCH -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-mismatch" id="cardGstMismatch">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.GstMismatchCount</h2>
+                <span class="badge bg-warning text-dark px-3 py-2">GST Mismatch</span>
+                <div class="mt-2">
+                    <small class="text-muted">Name matched but GST amount differs from expected</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MISSING IN GST -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-missing-gst" id="cardMissingInGst">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-bank"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.MissingInGstCount</h2>
+                <span class="badge bg-danger px-3 py-2">Missing in GST</span>
+                <div class="mt-2">
+                    <small class="text-muted">Present in RERA bank statement but not found in GST records</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MISSING IN RERA -->
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100 status-card status-missing-rera" id="cardMissingInRera">
+            <div class="card-body text-center py-4">
+                <div class="status-icon mx-auto mb-3">
+                    <i class="bi bi-receipt-cutoff"></i>
+                </div>
+                <h2 class="fw-bold mb-1">@Model.MissingInReraCount</h2>
+                <span class="badge bg-dark px-3 py-2">Missing in RERA</span>
+                <div class="mt-2">
+                    <small class="text-muted">Present in GST records but not found in RERA bank statement</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Progress Bar Summary                                              -->
+<!-- ================================================================ -->
+@if (Model.TotalComparisonResults > 0)
+{
+    <div class="row mb-4" id="progressSection">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-semibold">Reconciliation Breakdown</span>
+                        <span class="text-muted">@Model.TotalComparisonResults total results</span>
+                    </div>
+                    <div class="progress" style="height: 28px; border-radius: 8px;" role="progressbar" id="reconciliationProgress">
+                        @{
+                            double total = Model.TotalComparisonResults;
+                            double pMatched = total > 0 ? Model.MatchedCount / total * 100 : 0;
+                            double pLikely = total > 0 ? Model.LikelyMatchCount / total * 100 : 0;
+                            double pMismatch = total > 0 ? Model.GstMismatchCount / total * 100 : 0;
+                            double pPossible = total > 0 ? Model.PossibleMatchCount / total * 100 : 0;
+                            double pMissingGst = total > 0 ? Model.MissingInGstCount / total * 100 : 0;
+                            double pMissingRera = total > 0 ? Model.MissingInReraCount / total * 100 : 0;
+                        }
+                        <div class="progress-bar bg-success" style="width: @pMatched.ToString("F1")%"
+                             title="Matched: @Model.MatchedCount">
+                            @if (pMatched > 6) { <text>@Model.MatchedCount</text> }
+                        </div>
+                        <div class="progress-bar bg-primary" style="width: @pLikely.ToString("F1")%"
+                             title="Likely Match: @Model.LikelyMatchCount">
+                            @if (pLikely > 6) { <text>@Model.LikelyMatchCount</text> }
+                        </div>
+                        <div class="progress-bar bg-warning" style="width: @pMismatch.ToString("F1")%"
+                             title="Mismatch: @Model.GstMismatchCount">
+                            @if (pMismatch > 6) { <text>@Model.GstMismatchCount</text> }
+                        </div>
+                        <div class="progress-bar bg-secondary" style="width: @pPossible.ToString("F1")%"
+                             title="Possible: @Model.PossibleMatchCount">
+                            @if (pPossible > 6) { <text>@Model.PossibleMatchCount</text> }
+                        </div>
+                        <div class="progress-bar bg-danger" style="width: @pMissingGst.ToString("F1")%"
+                             title="Missing in GST: @Model.MissingInGstCount">
+                            @if (pMissingGst > 6) { <text>@Model.MissingInGstCount</text> }
+                        </div>
+                        <div class="progress-bar bg-dark" style="width: @pMissingRera.ToString("F1")%"
+                             title="Missing in RERA: @Model.MissingInReraCount">
+                            @if (pMissingRera > 6) { <text>@Model.MissingInReraCount</text> }
+                        </div>
+                    </div>
+                    <!-- Legend -->
+                    <div class="d-flex flex-wrap gap-3 mt-2">
+                        <small><span class="badge bg-success">&nbsp;</span> Matched</small>
+                        <small><span class="badge bg-primary">&nbsp;</span> Likely Match</small>
+                        <small><span class="badge bg-warning">&nbsp;</span> GST Mismatch</small>
+                        <small><span class="badge bg-secondary">&nbsp;</span> Possible Match</small>
+                        <small><span class="badge bg-danger">&nbsp;</span> Missing in GST</small>
+                        <small><span class="badge bg-dark">&nbsp;</span> Missing in RERA</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- ================================================================ -->
+<!-- Results Table                                                     -->
+<!-- ================================================================ -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="mb-0 fw-semibold">
+                    <i class="bi bi-table me-2"></i>Detailed Results
+                    <span class="badge bg-primary rounded-pill ms-2">@Model.TotalComparisonResults</span>
+                </h5>
+                <div class="d-flex gap-2">
+                    <a href="@Url.Action("ExportExcel", "Reports", new { sessionId = Model.SelectedSessionId })"
+                       class="btn btn-sm btn-success" id="exportExcelBtn">
+                        <i class="bi bi-file-earmark-excel me-1"></i>Export Excel
+                    </a>
+                    <a href="@Url.Action("Index", "Reports", new { sessionId = Model.SelectedSessionId })"
+                       class="btn btn-sm btn-outline-primary" id="viewReportsBtn">
+                        <i class="bi bi-funnel me-1"></i>Detailed Reports
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm align-middle mb-0" id="resultsTable">
+                        <thead>
+                            <tr class="table-light">
+                                <th class="ps-3">#</th>
+                                <th>Status</th>
+                                <th>RERA Name</th>
+                                <th>GST Name</th>
+                                <th class="text-end">Expected GST (&#x20B9;)</th>
+                                <th class="text-end">Actual GST (&#x20B9;)</th>
+                                <th class="text-end">Difference (&#x20B9;)</th>
+                                <th class="text-center">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Results != null && Model.Results.Any())
+                            {
+                                int sno = 1;
+                                foreach (var r in Model.Results)
+                                {
+                                    string rowClass, badgeClass;
+                                    switch (r.Status)
+                                    {
+                                        case "MATCHED":
+                                            rowClass = "table-success";
+                                            badgeClass = "bg-success";
+                                            break;
+                                        case "LIKELY_MATCH":
+                                            rowClass = "table-primary";
+                                            badgeClass = "bg-primary";
+                                            break;
+                                        case "GST_MISMATCH":
+                                            rowClass = "table-warning";
+                                            badgeClass = "bg-warning text-dark";
+                                            break;
+                                        case "POSSIBLE_MATCH":
+                                            rowClass = "";
+                                            badgeClass = "bg-secondary";
+                                            break;
+                                        case "MISSING_IN_GST":
+                                        case "RERA_NOT_GST":
+                                            rowClass = "table-danger";
+                                            badgeClass = "bg-danger";
+                                            break;
+                                        case "MISSING_IN_RERA":
+                                        case "GST_NOT_RERA":
+                                            rowClass = "";
+                                            badgeClass = "bg-dark";
+                                            break;
+                                        default:
+                                            rowClass = "";
+                                            badgeClass = "bg-secondary";
+                                            break;
+                                    }
+
+                                    decimal diff = r.ExpectedGST - r.ActualGST;
+                                    string displayLabel = GSTReraReconciliation.Models.ReconciliationStatus.DisplayLabel(r.Status);
+
+                                    <tr class="@rowClass">
+                                        <td class="ps-3 text-muted">@sno</td>
+                                        <td><span class="badge @badgeClass">@displayLabel</span></td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(r.RERAName))
+                                            {
+                                                @r.RERAName
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted fst-italic">&mdash;</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(r.GSTName))
+                                            {
+                                                @r.GSTName
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted fst-italic">&mdash;</span>
+                                            }
+                                        </td>
+                                        <td class="text-end font-monospace">@r.ExpectedGST.ToString("N2")</td>
+                                        <td class="text-end font-monospace">@r.ActualGST.ToString("N2")</td>
+                                        <td class="text-end font-monospace fw-semibold @(diff != 0 ? "text-danger" : "text-success")">
+                                            @diff.ToString("N2")
+                                        </td>
+                                        <td class="text-center">
+                                            @if (r.FinalScore > 0)
+                                            {
+                                                <span class="badge @(r.FinalScore >= 90 ? "bg-success" : r.FinalScore >= 70 ? "bg-info" : "bg-secondary") bg-opacity-75">@r.FinalScore%</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">&mdash;</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    sno++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.4;"></i>
+                                            <p class="mt-3 mb-2 fs-5">No comparison results yet</p>
+                                            <p class="mb-3">Upload RERA and GST bank statement files, then run a comparison to see reconciliation results.</p>
+                                            <a href="@Url.Action("Index", "Upload")" class="btn btn-primary" id="goToUploadBtn">
+                                                <i class="bi bi-cloud-arrow-up me-1"></i>Upload &amp; Compare
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @if (Model.TotalComparisonResults > 200)
+            {
+                <div class="card-footer bg-white text-center py-3">
+                    <p class="text-muted mb-2">Showing first 200 of @Model.TotalComparisonResults results.</p>
+                    <a href="@Url.Action("Index", "Reports", new { sessionId = Model.SelectedSessionId })"
+                       class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-right me-1"></i>View All in Reports
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Dashboard-specific styles                                         -->
+<!-- ================================================================ -->
+<style>
+    .icon-circle {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ls-wide {
+        letter-spacing: 0.5px;
+        font-size: 0.72rem;
+    }
+
+    .status-card {
+        border-radius: 14px !important;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .status-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .status-card .status-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+
+    /* Status-specific colors */
+    .status-matched .status-icon {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+    }
+    .status-matched { border-bottom: 3px solid #28a745 !important; }
+
+    .status-likely .status-icon {
+        background: linear-gradient(135deg, #cce5ff, #b8daff);
+        color: #004085;
+    }
+    .status-likely { border-bottom: 3px solid #007bff !important; }
+
+    .status-possible .status-icon {
+        background: linear-gradient(135deg, #e2e3e5, #d6d8db);
+        color: #383d41;
+    }
+    .status-possible { border-bottom: 3px solid #6c757d !important; }
+
+    .status-mismatch .status-icon {
+        background: linear-gradient(135deg, #fff3cd, #ffeeba);
+        color: #856404;
+    }
+    .status-mismatch { border-bottom: 3px solid #ffc107 !important; }
+
+    .status-missing-gst .status-icon {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        color: #721c24;
+    }
+    .status-missing-gst { border-bottom: 3px solid #dc3545 !important; }
+
+    .status-missing-rera .status-icon {
+        background: linear-gradient(135deg, #d6d8db, #c8cbcf);
+        color: #1b1e21;
+    }
+    .status-missing-rera { border-bottom: 3px solid #343a40 !important; }
+
+    .font-monospace {
+        font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+        font-size: 0.88rem;
+    }
+
+    .progress-bar {
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: width 0.8s ease;
+    }
+
+    @@media (max-width: 768px) {
+        .status-card h2 { font-size: 1.5rem; }
+        .status-card .status-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+        .icon-circle { width: 42px; height: 42px; }
+    }
+</style>

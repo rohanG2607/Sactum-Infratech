@@ -1,0 +1,120 @@
+@{
+    ViewBag.Title = "Home";
+}
+
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="bg-primary bg-gradient text-white rounded-4 p-5 shadow" id="heroSection">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-3">
+                        <i class="bi bi-bank2 me-2"></i>GST vs RERA Reconciliation
+                    </h1>
+                    <p class="lead mb-4">
+                        Streamline your bank statement reconciliation between GST returns and RERA project accounts.
+                        Upload Excel files, run automated comparisons, and export detailed reports.
+                    </p>
+                    <a href="@Url.Action("Index", "Upload")" class="btn btn-light btn-lg me-2" id="heroUploadBtn">
+                        <i class="bi bi-cloud-arrow-up me-1"></i>Upload Files
+                    </a>
+                    <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-light btn-lg" id="heroDashboardBtn">
+                        <i class="bi bi-speedometer2 me-1"></i>View Dashboard
+                    </a>
+                </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class="bi bi-graph-up-arrow" style="font-size: 8rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4 mb-5" id="quickActions">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+            <div class="card-body text-center p-4">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-cloud-arrow-up text-primary" style="font-size: 2rem;"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Upload Files</h5>
+                <p class="card-text text-muted">
+                    Upload your GST returns and RERA bank statements in Excel format (.xlsx) for processing.
+                </p>
+                <a href="@Url.Action("Index", "Upload")" class="btn btn-outline-primary" id="cardUploadBtn">
+                    Go to Upload <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+            <div class="card-body text-center p-4">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-speedometer2 text-success" style="font-size: 2rem;"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Dashboard</h5>
+                <p class="card-text text-muted">
+                    View reconciliation statistics, run comparisons, and see matched vs unmatched records at a glance.
+                </p>
+                <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-success" id="cardDashboardBtn">
+                    View Dashboard <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+            <div class="card-body text-center p-4">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-file-earmark-bar-graph text-info" style="font-size: 2rem;"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Reports</h5>
+                <p class="card-text text-muted">
+                    Filter, search, and export reconciliation reports to Excel or PDF for audit and compliance.
+                </p>
+                <a href="@Url.Action("Index", "Reports")" class="btn btn-outline-info" id="cardReportsBtn">
+                    View Reports <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow Steps -->
+<div class="row mb-4" id="workflowSection">
+    <div class="col-12">
+        <h3 class="fw-bold mb-4 text-center">How It Works</h3>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="bg-light rounded-3 p-4">
+            <span class="badge bg-primary rounded-pill fs-5 mb-3">1</span>
+            <h6 class="fw-semibold">Upload GST File</h6>
+            <small class="text-muted">Upload your GST return/register Excel file</small>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="bg-light rounded-3 p-4">
+            <span class="badge bg-primary rounded-pill fs-5 mb-3">2</span>
+            <h6 class="fw-semibold">Upload RERA File</h6>
+            <small class="text-muted">Upload your RERA bank statement Excel file</small>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="bg-light rounded-3 p-4">
+            <span class="badge bg-primary rounded-pill fs-5 mb-3">3</span>
+            <h6 class="fw-semibold">Run Comparison</h6>
+            <small class="text-muted">System matches records by amount and date</small>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="bg-light rounded-3 p-4">
+            <span class="badge bg-primary rounded-pill fs-5 mb-3">4</span>
+            <h6 class="fw-semibold">Export Report</h6>
+            <small class="text-muted">Download reconciliation report in Excel/PDF</small>
+        </div>
+    </div>
+</div>

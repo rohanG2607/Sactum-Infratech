@@ -1,0 +1,614 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 0000002E E01D:BFC9
+D:.
+|   project_structure.txt
+|   
+\---GSTReraReconciliation
+    |   .gitignore
+    |   check_db.cs
+    |   check_db.exe
+    |   GSTReraReconciliation.sln
+    |   nuget.exe
+    |   README.md
+    |   SqlLocalDB.msi
+    |   
+    +---Documentation
+    |       ProjectDocumentation.md
+    |       
+    +---GSTReraReconciliation
+    |   |   Global.asax
+    |   |   Global.asax.cs
+    |   |   GSTReraReconciliation.csproj
+    |   |   packages.config
+    |   |   Web.config
+    |   |   
+    |   +---App_Data
+    |   |   |   GSTReraReconciliationDb.mdf
+    |   |   |   GSTReraReconciliationDb_log.ldf
+    |   |   |   
+    |   |   \---Uploads
+    |   |           .gitkeep
+    |   |           444ce3df69994e31aacc2d4c6fb7aed5.xls
+    |   |           4d9ca49d6b134f8e9d9a4d04eec3c6f8.xls
+    |   |           75d991bbb1804d1589315ee358f76368.xls
+    |   |           ac2abfa98f914f2ba2fc12018a226aa1.xls
+    |   |           aed14e061fc147f7874516efd9196600.xls
+    |   |           e4eca35f3f4d454eb693b8f570f20d99.xls
+    |   |           ec8140fbaa79461fb07096adda39df75.xls
+    |   |           f5fab27d3c8b476c9e236fe829d7a423.xls
+    |   |           
+    |   +---App_Start
+    |   |       BundleConfig.cs
+    |   |       DependencyConfig.cs
+    |   |       FilterConfig.cs
+    |   |       RouteConfig.cs
+    |   |       
+    |   +---bin
+    |   |       EntityFramework.dll
+    |   |       EntityFramework.SqlServer.dll
+    |   |       EntityFramework.SqlServer.xml
+    |   |       EntityFramework.xml
+    |   |       EPPlus.dll
+    |   |       EPPlus.xml
+    |   |       FuzzySharp.dll
+    |   |       GSTReraReconciliation.dll
+    |   |       GSTReraReconciliation.pdb
+    |   |       Microsoft.Web.Infrastructure.dll
+    |   |       Newtonsoft.Json.dll
+    |   |       Newtonsoft.Json.xml
+    |   |       System.Web.Helpers.dll
+    |   |       System.Web.Helpers.xml
+    |   |       System.Web.Mvc.dll
+    |   |       System.Web.Mvc.xml
+    |   |       System.Web.Optimization.dll
+    |   |       System.Web.Optimization.xml
+    |   |       System.Web.Razor.dll
+    |   |       System.Web.Razor.xml
+    |   |       System.Web.WebPages.Deployment.dll
+    |   |       System.Web.WebPages.Deployment.xml
+    |   |       System.Web.WebPages.dll
+    |   |       System.Web.WebPages.Razor.dll
+    |   |       System.Web.WebPages.Razor.xml
+    |   |       System.Web.WebPages.xml
+    |   |       WebGrease.dll
+    |   |       
+    |   +---Content
+    |   |       bootstrap-grid.css
+    |   |       bootstrap-grid.css.map
+    |   |       bootstrap-grid.min.css
+    |   |       bootstrap-grid.min.css.map
+    |   |       bootstrap-grid.rtl.css
+    |   |       bootstrap-grid.rtl.css.map
+    |   |       bootstrap-grid.rtl.min.css
+    |   |       bootstrap-grid.rtl.min.css.map
+    |   |       bootstrap-reboot.css
+    |   |       bootstrap-reboot.css.map
+    |   |       bootstrap-reboot.min.css
+    |   |       bootstrap-reboot.min.css.map
+    |   |       bootstrap-reboot.rtl.css
+    |   |       bootstrap-reboot.rtl.css.map
+    |   |       bootstrap-reboot.rtl.min.css
+    |   |       bootstrap-reboot.rtl.min.css.map
+    |   |       bootstrap-utilities.css
+    |   |       bootstrap-utilities.css.map
+    |   |       bootstrap-utilities.min.css
+    |   |       bootstrap-utilities.min.css.map
+    |   |       bootstrap-utilities.rtl.css
+    |   |       bootstrap-utilities.rtl.css.map
+    |   |       bootstrap-utilities.rtl.min.css
+    |   |       bootstrap-utilities.rtl.min.css.map
+    |   |       bootstrap.css
+    |   |       bootstrap.css.map
+    |   |       bootstrap.min.css
+    |   |       bootstrap.min.css.map
+    |   |       bootstrap.rtl.css
+    |   |       bootstrap.rtl.css.map
+    |   |       bootstrap.rtl.min.css
+    |   |       bootstrap.rtl.min.css.map
+    |   |       Site.css
+    |   |       
+    |   +---Controllers
+    |   |       DashboardController.cs
+    |   |       HomeController.cs
+    |   |       ReportsController.cs
+    |   |       UploadController.cs
+    |   |       
+    |   +---Data
+    |   |   |   ReconciliationDbContext.cs
+    |   |   |   
+    |   |   \---Repositories
+    |   |           GenericRepository.cs
+    |   |           IGenericRepository.cs
+    |   |           
+    |   +---Migrations
+    |   |       Configuration.cs
+    |   |       
+    |   +---Models
+    |   |       ComparisonResult.cs
+    |   |       GSTRecord.cs
+    |   |       ImportResult.cs
+    |   |       RERARecord.cs
+    |   |       UploadSession.cs
+    |   |       
+    |   +---obj
+    |   |   \---Debug
+    |   |           .NETFramework,Version=v4.8.AssemblyAttributes.cs
+    |   |           GSTReraReconciliation.csproj.AssemblyReference.cache
+    |   |           GSTReraReconciliation.csproj.CopyComplete
+    |   |           GSTReraReconciliation.csproj.CoreCompileInputs.cache
+    |   |           GSTReraReconciliation.csproj.FileListAbsolute.txt
+    |   |           GSTReraReconciliation.dll
+    |   |           GSTReraReconciliation.pdb
+    |   |           
+    |   +---Scripts
+    |   |       bootstrap.bundle.js
+    |   |       bootstrap.bundle.js.map
+    |   |       bootstrap.bundle.min.js
+    |   |       bootstrap.bundle.min.js.map
+    |   |       bootstrap.esm.js
+    |   |       bootstrap.esm.js.map
+    |   |       bootstrap.esm.min.js
+    |   |       bootstrap.esm.min.js.map
+    |   |       bootstrap.js
+    |   |       bootstrap.js.map
+    |   |       bootstrap.min.js
+    |   |       bootstrap.min.js.map
+    |   |       jquery-3.7.1-vsdoc.js
+    |   |       jquery-3.7.1.js
+    |   |       jquery-3.7.1.min.js
+    |   |       jquery-3.7.1.min.map
+    |   |       jquery-3.7.1.slim.js
+    |   |       jquery-3.7.1.slim.min.js
+    |   |       jquery-3.7.1.slim.min.map
+    |   |       jquery.validate-vsdoc.js
+    |   |       jquery.validate.js
+    |   |       jquery.validate.min.js
+    |   |       jquery.validate.unobtrusive.js
+    |   |       jquery.validate.unobtrusive.min.js
+    |   |       site.js
+    |   |       
+    |   +---Services
+    |   |       ComparisonService.cs
+    |   |       ExcelImportService.cs
+    |   |       ExportService.cs
+    |   |       IComparisonService.cs
+    |   |       IExcelImportService.cs
+    |   |       IExportService.cs
+    |   |       NameExtractionService.cs
+    |   |       TransactionFilterService.cs
+    |   |       
+    |   +---SQL
+    |   |       InitialSchema.sql
+    |   |       
+    |   +---ViewModels
+    |   |       DashboardViewModel.cs
+    |   |       ReportFilterViewModel.cs
+    |   |       UploadViewModel.cs
+    |   |       
+    |   \---Views
+    |       |   Web.config
+    |       |   _ViewStart.cshtml
+    |       |   
+    |       +---Dashboard
+    |       |       Index.cshtml
+    |       |       
+    |       +---Home
+    |       |       Index.cshtml
+    |       |       
+    |       +---Reports
+    |       |       Index.cshtml
+    |       |       
+    |       +---Shared
+    |       |       _Error.cshtml
+    |       |       _Layout.cshtml
+    |       |       
+    |       \---Upload
+    |               Index.cshtml
+    |               _UploadStatus.cshtml
+    |               
+    \---packages
+        +---bootstrap.5.3.3
+        |   |   .signature.p7s
+        |   |   bootstrap.5.3.3.nupkg
+        |   |   bootstrap.png
+        |   |   
+        |   +---content
+        |   |   +---Content
+        |   |   |       bootstrap-grid.css
+        |   |   |       bootstrap-grid.css.map
+        |   |   |       bootstrap-grid.min.css
+        |   |   |       bootstrap-grid.min.css.map
+        |   |   |       bootstrap-grid.rtl.css
+        |   |   |       bootstrap-grid.rtl.css.map
+        |   |   |       bootstrap-grid.rtl.min.css
+        |   |   |       bootstrap-grid.rtl.min.css.map
+        |   |   |       bootstrap-reboot.css
+        |   |   |       bootstrap-reboot.css.map
+        |   |   |       bootstrap-reboot.min.css
+        |   |   |       bootstrap-reboot.min.css.map
+        |   |   |       bootstrap-reboot.rtl.css
+        |   |   |       bootstrap-reboot.rtl.css.map
+        |   |   |       bootstrap-reboot.rtl.min.css
+        |   |   |       bootstrap-reboot.rtl.min.css.map
+        |   |   |       bootstrap-utilities.css
+        |   |   |       bootstrap-utilities.css.map
+        |   |   |       bootstrap-utilities.min.css
+        |   |   |       bootstrap-utilities.min.css.map
+        |   |   |       bootstrap-utilities.rtl.css
+        |   |   |       bootstrap-utilities.rtl.css.map
+        |   |   |       bootstrap-utilities.rtl.min.css
+        |   |   |       bootstrap-utilities.rtl.min.css.map
+        |   |   |       bootstrap.css
+        |   |   |       bootstrap.css.map
+        |   |   |       bootstrap.min.css
+        |   |   |       bootstrap.min.css.map
+        |   |   |       bootstrap.rtl.css
+        |   |   |       bootstrap.rtl.css.map
+        |   |   |       bootstrap.rtl.min.css
+        |   |   |       bootstrap.rtl.min.css.map
+        |   |   |       
+        |   |   \---Scripts
+        |   |           bootstrap.bundle.js
+        |   |           bootstrap.bundle.js.map
+        |   |           bootstrap.bundle.min.js
+        |   |           bootstrap.bundle.min.js.map
+        |   |           bootstrap.esm.js
+        |   |           bootstrap.esm.js.map
+        |   |           bootstrap.esm.min.js
+        |   |           bootstrap.esm.min.js.map
+        |   |           bootstrap.js
+        |   |           bootstrap.js.map
+        |   |           bootstrap.min.js
+        |   |           bootstrap.min.js.map
+        |   |           
+        |   \---contentFiles
+        |       \---any
+        |           \---any
+        |               \---wwwroot
+        |                   +---css
+        |                   |       bootstrap-grid.css
+        |                   |       bootstrap-grid.css.map
+        |                   |       bootstrap-grid.min.css
+        |                   |       bootstrap-grid.min.css.map
+        |                   |       bootstrap-grid.rtl.css
+        |                   |       bootstrap-grid.rtl.css.map
+        |                   |       bootstrap-grid.rtl.min.css
+        |                   |       bootstrap-grid.rtl.min.css.map
+        |                   |       bootstrap-reboot.css
+        |                   |       bootstrap-reboot.css.map
+        |                   |       bootstrap-reboot.min.css
+        |                   |       bootstrap-reboot.min.css.map
+        |                   |       bootstrap-reboot.rtl.css
+        |                   |       bootstrap-reboot.rtl.css.map
+        |                   |       bootstrap-reboot.rtl.min.css
+        |                   |       bootstrap-reboot.rtl.min.css.map
+        |                   |       bootstrap-utilities.css
+        |                   |       bootstrap-utilities.css.map
+        |                   |       bootstrap-utilities.min.css
+        |                   |       bootstrap-utilities.min.css.map
+        |                   |       bootstrap-utilities.rtl.css
+        |                   |       bootstrap-utilities.rtl.css.map
+        |                   |       bootstrap-utilities.rtl.min.css
+        |                   |       bootstrap-utilities.rtl.min.css.map
+        |                   |       bootstrap.css
+        |                   |       bootstrap.css.map
+        |                   |       bootstrap.min.css
+        |                   |       bootstrap.min.css.map
+        |                   |       bootstrap.rtl.css
+        |                   |       bootstrap.rtl.css.map
+        |                   |       bootstrap.rtl.min.css
+        |                   |       bootstrap.rtl.min.css.map
+        |                   |       
+        |                   \---js
+        |                           bootstrap.bundle.js
+        |                           bootstrap.bundle.js.map
+        |                           bootstrap.bundle.min.js
+        |                           bootstrap.bundle.min.js.map
+        |                           bootstrap.esm.js
+        |                           bootstrap.esm.js.map
+        |                           bootstrap.esm.min.js
+        |                           bootstrap.esm.min.js.map
+        |                           bootstrap.js
+        |                           bootstrap.js.map
+        |                           bootstrap.min.js
+        |                           bootstrap.min.js.map
+        |                           
+        +---EntityFramework.6.5.1
+        |   |   .signature.p7s
+        |   |   EntityFramework.6.5.1.nupkg
+        |   |   Icon.png
+        |   |   README.md
+        |   |   
+        |   +---build
+        |   |   |   EntityFramework.DefaultItems.props
+        |   |   |   EntityFramework.props
+        |   |   |   EntityFramework.targets
+        |   |   |   Microsoft.Data.Entity.Build.Tasks.dll
+        |   |   |   
+        |   |   \---net6.0
+        |   |           EntityFramework.props
+        |   |           EntityFramework.targets
+        |   |           
+        |   +---buildTransitive
+        |   |   |   EntityFramework.props
+        |   |   |   EntityFramework.targets
+        |   |   |   
+        |   |   \---net6.0
+        |   |           EntityFramework.props
+        |   |           EntityFramework.targets
+        |   |           
+        |   +---content
+        |   |   \---net40
+        |   |           App.config.install.xdt
+        |   |           App.config.transform
+        |   |           Web.config.install.xdt
+        |   |           Web.config.transform
+        |   |           
+        |   +---lib
+        |   |   +---net40
+        |   |   |       EntityFramework.dll
+        |   |   |       EntityFramework.SqlServer.dll
+        |   |   |       EntityFramework.SqlServer.xml
+        |   |   |       EntityFramework.xml
+        |   |   |       
+        |   |   +---net45
+        |   |   |       EntityFramework.dll
+        |   |   |       EntityFramework.SqlServer.dll
+        |   |   |       EntityFramework.SqlServer.xml
+        |   |   |       EntityFramework.xml
+        |   |   |       
+        |   |   \---netstandard2.1
+        |   |           EntityFramework.dll
+        |   |           EntityFramework.SqlServer.dll
+        |   |           EntityFramework.SqlServer.xml
+        |   |           EntityFramework.xml
+        |   |           
+        |   \---tools
+        |       |   about_EntityFramework6.help.txt
+        |       |   EntityFramework6.PS2.psd1
+        |       |   EntityFramework6.PS2.psm1
+        |       |   EntityFramework6.psd1
+        |       |   EntityFramework6.psm1
+        |       |   init.ps1
+        |       |   install.ps1
+        |       |   
+        |       +---net40
+        |       |   +---any
+        |       |   |       ef6.exe
+        |       |   |       ef6.pdb
+        |       |   |       
+        |       |   +---win-arm64
+        |       |   |       ef6.exe
+        |       |   |       ef6.pdb
+        |       |   |       
+        |       |   \---win-x86
+        |       |           ef6.exe
+        |       |           ef6.pdb
+        |       |           
+        |       +---net45
+        |       |   +---any
+        |       |   |       ef6.exe
+        |       |   |       ef6.pdb
+        |       |   |       
+        |       |   +---win-arm64
+        |       |   |       ef6.exe
+        |       |   |       ef6.pdb
+        |       |   |       
+        |       |   \---win-x86
+        |       |           ef6.exe
+        |       |           ef6.pdb
+        |       |           
+        |       \---net6.0
+        |           \---any
+        |                   ef6.dll
+        |                   ef6.pdb
+        |                   ef6.runtimeconfig.json
+        |                   
+        +---EPPlus.4.5.3.3
+        |   |   .signature.p7s
+        |   |   EPPlus.4.5.3.3.nupkg
+        |   |   lgpl-3.0.txt
+        |   |   readme.txt
+        |   |   
+        |   \---lib
+        |       +---net35
+        |       |       EPPlus.dll
+        |       |       EPPlus.xml
+        |       |       
+        |       +---net40
+        |       |       EPPlus.dll
+        |       |       EPPlus.xml
+        |       |       
+        |       +---netstandard2.0
+        |       |       EPPlus.dll
+        |       |       EPPlus.xml
+        |       |       
+        |       \---netstandard2.1
+        |               EPPlus.dll
+        |               EPPlus.xml
+        |               
+        +---FuzzySharp.2.0.2
+        |   |   .signature.p7s
+        |   |   FuzzySharp.2.0.2.nupkg
+        |   |   README.md
+        |   |   
+        |   \---lib
+        |       +---net45
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---net46
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---net461
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---netcoreapp2.0
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---netcoreapp2.1
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---netstandard1.6
+        |       |       FuzzySharp.dll
+        |       |       
+        |       +---netstandard2.0
+        |       |       FuzzySharp.dll
+        |       |       
+        |       \---netstandard2.1
+        |               FuzzySharp.dll
+        |               
+        +---jQuery.3.7.1
+        |   |   .signature.p7s
+        |   |   jQuery.3.7.1.nupkg
+        |   |   
+        |   +---Content
+        |   |   \---Scripts
+        |   |           jquery-3.7.1-vsdoc.js
+        |   |           jquery-3.7.1.js
+        |   |           jquery-3.7.1.min.js
+        |   |           jquery-3.7.1.min.map
+        |   |           jquery-3.7.1.slim.js
+        |   |           jquery-3.7.1.slim.min.js
+        |   |           jquery-3.7.1.slim.min.map
+        |   |           
+        |   \---Tools
+        |           common.ps1
+        |           install.ps1
+        |           jquery-3.7.1.intellisense.js
+        |           uninstall.ps1
+        |           
+        +---jQuery.Validation.1.20.0
+        |   |   .signature.p7s
+        |   |   jQuery.Validation.1.20.0.nupkg
+        |   |   
+        |   \---Content
+        |       \---Scripts
+        |               jquery.validate-vsdoc.js
+        |               jquery.validate.js
+        |               jquery.validate.min.js
+        |               
+        +---Microsoft.AspNet.Mvc.5.2.9
+        |   |   .signature.p7s
+        |   |   Microsoft.AspNet.Mvc.5.2.9.nupkg
+        |   |   NET.icon.png
+        |   |   NET_Library_EULA_ENU.txt
+        |   |   
+        |   +---Content
+        |   |       Web.config.install.xdt
+        |   |       Web.config.uninstall.xdt
+        |   |       
+        |   \---lib
+        |       \---net45
+        |               System.Web.Mvc.dll
+        |               System.Web.Mvc.xml
+        |               
+        +---Microsoft.AspNet.Razor.3.2.9
+        |   |   .signature.p7s
+        |   |   Microsoft.AspNet.Razor.3.2.9.nupkg
+        |   |   NET.icon.png
+        |   |   NET_Library_EULA_ENU.txt
+        |   |   
+        |   \---lib
+        |       \---net45
+        |               System.Web.Razor.dll
+        |               System.Web.Razor.xml
+        |               
+        +---Microsoft.AspNet.Web.Optimization.1.1.3
+        |   |   .signature.p7s
+        |   |   Microsoft.AspNet.Web.Optimization.1.1.3.nupkg
+        |   |   
+        |   \---lib
+        |       \---net40
+        |               System.Web.Optimization.dll
+        |               system.web.optimization.xml
+        |               
+        +---Microsoft.AspNet.WebPages.3.2.9
+        |   |   .signature.p7s
+        |   |   Microsoft.AspNet.WebPages.3.2.9.nupkg
+        |   |   NET.icon.png
+        |   |   NET_Library_EULA_ENU.txt
+        |   |   
+        |   +---Content
+        |   |       Web.config.install.xdt
+        |   |       Web.config.uninstall.xdt
+        |   |       
+        |   \---lib
+        |       \---net45
+        |               System.Web.Helpers.dll
+        |               System.Web.Helpers.xml
+        |               System.Web.WebPages.Deployment.dll
+        |               System.Web.WebPages.Deployment.xml
+        |               System.Web.WebPages.dll
+        |               System.Web.WebPages.Razor.dll
+        |               System.Web.WebPages.Razor.xml
+        |               System.Web.WebPages.xml
+        |               
+        +---Microsoft.jQuery.Unobtrusive.Validation.3.2.12
+        |   |   .signature.p7s
+        |   |   Microsoft.jQuery.Unobtrusive.Validation.3.2.12.nupkg
+        |   |   
+        |   \---Content
+        |       \---Scripts
+        |               jquery.validate.unobtrusive.js
+        |               jquery.validate.unobtrusive.min.js
+        |               
+        +---Microsoft.Web.Infrastructure.2.0.0
+        |   |   .signature.p7s
+        |   |   Microsoft.Web.Infrastructure.2.0.0.nupkg
+        |   |   NET.icon.png
+        |   |   NET_Library_EULA_ENU.txt
+        |   |   
+        |   \---lib
+        |       \---net40
+        |               Microsoft.Web.Infrastructure.dll
+        |               
+        +---Newtonsoft.Json.13.0.3
+        |   |   .signature.p7s
+        |   |   LICENSE.md
+        |   |   Newtonsoft.Json.13.0.3.nupkg
+        |   |   packageIcon.png
+        |   |   README.md
+        |   |   
+        |   \---lib
+        |       +---net20
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---net35
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---net40
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---net45
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---net6.0
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---netstandard1.0
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       +---netstandard1.3
+        |       |       Newtonsoft.Json.dll
+        |       |       Newtonsoft.Json.xml
+        |       |       
+        |       \---netstandard2.0
+        |               Newtonsoft.Json.dll
+        |               Newtonsoft.Json.xml
+        |               
+        \---WebGrease.1.6.0
+            |   .signature.p7s
+            |   WebGrease.1.6.0.nupkg
+            |   
+            +---lib
+            |       WebGrease.dll
+            |       
+            \---tools
+                    WG.EXE
+                    

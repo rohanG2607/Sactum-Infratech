@@ -1,0 +1,467 @@
+﻿@model GSTReraReconciliation.ViewModels.UploadViewModel
+@{
+    ViewBag.Title = "Upload & Compare";
+}
+
+<!-- Page Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold">
+            <i class="bi bi-cloud-arrow-up me-2"></i>Upload &amp; Compare
+        </h2>
+        <p class="text-muted">
+            Upload RERA and GST bank statement Excel files, then compare them to find discrepancies.
+            <br/><small class="text-info"><i class="bi bi-info-circle me-1"></i>Expected format: Bank statement with Transaction Date, Description, Credit columns.</small>
+        </p>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Step 1: Dual Upload Section                                      -->
+<!-- ================================================================ -->
+<div class="row g-4 mb-4" id="uploadSection">
+
+    <!-- RERA Upload Card -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-warning text-dark d-flex align-items-center">
+                <i class="bi bi-bank me-2 fs-5"></i>
+                <h5 class="mb-0 fw-semibold">Step 1A &mdash; Upload RERA Bank Statement</h5>
+            </div>
+            <div class="card-body p-4">
+                @using (Html.BeginForm("UploadRERA", "Upload", FormMethod.Post,
+                    new { enctype = "multipart/form-data", id = "reraUploadForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.SessionId)
+                    @Html.HiddenFor(m => m.GSTRecordCount)
+                    @Html.HiddenFor(m => m.GSTMessage)
+                    @Html.HiddenFor(m => m.GSTSuccess)
+
+                    <div class="mb-3">
+                        <label for="reraFile" class="form-label fw-semibold">RERA Excel File</label>
+                        <input type="file" name="RERAFile" id="reraFile"
+                               class="form-control" accept=".xlsx,.xls" required />
+                        <div class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Expected columns: <strong>Name</strong>, <strong>Amount</strong> &mdash; .xlsx or .xls, max 10 MB
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning btn-lg w-100" id="uploadReraBtn">
+                        <i class="bi bi-upload me-1"></i>Upload RERA File
+                    </button>
+                }
+
+                <!-- RERA Status -->
+                @if (!string.IsNullOrEmpty(Model.RERAMessage))
+                {
+                    <div class="alert @(Model.RERASuccess ? "alert-success" : "alert-danger") mt-3 mb-0" id="reraStatusAlert">
+                        <i class="bi @(Model.RERASuccess ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill") me-2"></i>
+                        @Model.RERAMessage
+                    </div>
+                }
+                @if (Model.RERAImportResult != null)
+                {
+                    <div class="mt-2">
+                        <div class="row text-center g-2">
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-primary">@Model.RERAImportResult.TotalRowsRead</div>
+                                    <small class="text-muted">Total Rows</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-success">@Model.RERAImportResult.ValidCustomerRecords</div>
+                                    <small class="text-muted">Valid</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-warning">@Model.RERAImportResult.SkippedRows</div>
+                                    <small class="text-muted">Skipped</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-info">@Model.RERAImportResult.ImportedRecords</div>
+                                    <small class="text-muted">Imported</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- Card Footer Status -->
+            <div class="card-footer bg-transparent text-center">
+                @if (Model.RERARecordCount.HasValue)
+                {
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        <i class="bi bi-check2 me-1"></i>@Model.RERARecordCount.Value Records Loaded
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        <i class="bi bi-hourglass me-1"></i>Awaiting Upload
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- GST Upload Card -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-info text-white d-flex align-items-center">
+                <i class="bi bi-receipt me-2 fs-5"></i>
+                <h5 class="mb-0 fw-semibold">Step 1B &mdash; Upload GST Return</h5>
+            </div>
+            <div class="card-body p-4">
+                @using (Html.BeginForm("UploadGST", "Upload", FormMethod.Post,
+                    new { enctype = "multipart/form-data", id = "gstUploadForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.SessionId)
+                    @Html.HiddenFor(m => m.RERARecordCount)
+                    @Html.HiddenFor(m => m.RERAMessage)
+                    @Html.HiddenFor(m => m.RERASuccess)
+
+                    <div class="mb-3">
+                        <label for="gstFile" class="form-label fw-semibold">GST Excel File</label>
+                        <input type="file" name="GSTFile" id="gstFile"
+                               class="form-control" accept=".xlsx,.xls" required />
+                        <div class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Expected columns: <strong>Name</strong>, <strong>GSTAmount</strong> &mdash; .xlsx or .xls, max 10 MB
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-lg w-100 text-white" id="uploadGstBtn">
+                        <i class="bi bi-upload me-1"></i>Upload GST File
+                    </button>
+                }
+
+                <!-- GST Status -->
+                @if (!string.IsNullOrEmpty(Model.GSTMessage))
+                {
+                    <div class="alert @(Model.GSTSuccess ? "alert-success" : "alert-danger") mt-3 mb-0" id="gstStatusAlert">
+                        <i class="bi @(Model.GSTSuccess ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill") me-2"></i>
+                        @Model.GSTMessage
+                    </div>
+                }
+                @if (Model.GSTImportResult != null)
+                {
+                    <div class="mt-2">
+                        <div class="row text-center g-2">
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-primary">@Model.GSTImportResult.TotalRowsRead</div>
+                                    <small class="text-muted">Total Rows</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-success">@Model.GSTImportResult.ValidCustomerRecords</div>
+                                    <small class="text-muted">Valid</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-warning">@Model.GSTImportResult.SkippedRows</div>
+                                    <small class="text-muted">Skipped</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="bg-light rounded p-2">
+                                    <div class="fw-bold text-info">@Model.GSTImportResult.ImportedRecords</div>
+                                    <small class="text-muted">Imported</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- Card Footer Status -->
+            <div class="card-footer bg-transparent text-center">
+                @if (Model.GSTRecordCount.HasValue)
+                {
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        <i class="bi bi-check2 me-1"></i>@Model.GSTRecordCount.Value Records Loaded
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        <i class="bi bi-hourglass me-1"></i>Awaiting Upload
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Step 2: Compare Data Button                                       -->
+<!-- ================================================================ -->
+<div class="row mb-5" id="compareSection">
+    <div class="col-12">
+        <div class="card border-0 shadow @(Model.BothUploaded ? "border-success" : "")">
+            <div class="card-body text-center py-4">
+                @if (Model.BothUploaded)
+                {
+                    <div class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold text-success mb-2">Both Files Uploaded Successfully</h4>
+                    <p class="text-muted mb-4">
+                        RERA: <strong>@Model.RERARecordCount</strong> records &nbsp;|&nbsp;
+                        GST: <strong>@Model.GSTRecordCount</strong> records &nbsp;|&nbsp;
+                        Session: <strong>#@Model.SessionId</strong>
+                    </p>
+
+                    using (Html.BeginForm("Compare", "Upload", FormMethod.Post, new { id = "compareForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="sessionId" value="@Model.SessionId" />
+
+                        <button type="submit" class="btn btn-success btn-lg px-5 py-3 shadow" id="compareBtn">
+                            <i class="bi bi-arrow-left-right me-2 fs-4"></i>
+                            <span class="fs-5 fw-semibold">Compare Data</span>
+                        </button>
+                    }
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <i class="bi bi-arrow-left-right text-muted" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <h4 class="fw-bold text-muted mb-2">Step 2 &mdash; Compare Data</h4>
+                    <p class="text-muted mb-3">
+                        Upload both RERA and GST files above to enable comparison.
+                    </p>
+                    <button class="btn btn-secondary btn-lg px-5 py-3" disabled id="compareBtnDisabled">
+                        <i class="bi bi-arrow-left-right me-2"></i>Compare Data
+                    </button>
+                }
+
+                <!-- Compare Status -->
+                @if (!string.IsNullOrEmpty(Model.CompareMessage))
+                {
+                    <div class="alert @(Model.CompareSuccess ? "alert-success" : "alert-danger") mt-4 mx-auto" style="max-width: 600px;" id="compareStatusAlert">
+                        <i class="bi @(Model.CompareSuccess ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill") me-2"></i>
+                        @Model.CompareMessage
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Column Reference Guide                                            -->
+<!-- ================================================================ -->
+<div class="row mb-5">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-file-earmark-spreadsheet text-warning me-2"></i>Bank Statement Format (RERA & GST)</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered mb-0">
+                        <thead class="table-warning">
+                            <tr>
+                                <th>Transaction Date</th>
+                                <th>Value Date</th>
+                                <th>Description</th>
+                                <th>CHQ</th>
+                                <th>Credit</th>
+                                <th>Debit</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-muted">
+                                <td>02/01/2026</td>
+                                <td>02/01/2026</td>
+                                <td>CLG CR: PRIYANKA SUSHIL RANE</td>
+                                <td>10</td>
+                                <td><strong>19337</strong></td>
+                                <td></td>
+                                <td>350252.12CR</td>
+                            </tr>
+                            <tr class="text-muted">
+                                <td>02/01/2026</td>
+                                <td>02/01/2026</td>
+                                <td>CLG CR: RAJU B KORE</td>
+                                <td>604</td>
+                                <td><strong>17859</strong></td>
+                                <td></td>
+                                <td>387932.12CR</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-2">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        System auto-detects header row, extracts names from Description, uses Credit as amount.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-funnel text-info me-2"></i>Import Pipeline</h6>
+                <ol class="mb-0 small">
+                    <li class="mb-1"><strong>Header Detection</strong> &mdash; Scans for row with "Transaction Date" + "Description" + "Credit"</li>
+                    <li class="mb-1"><strong>Row Filtering</strong> &mdash; Skips rows where Description is empty or Credit &le; 0</li>
+                    <li class="mb-1"><strong>Transaction Filter</strong> &mdash; Excludes SI, REVERSAL, TERM LOAN, CHARGES, etc.</li>
+                    <li class="mb-1"><strong>Name Extraction</strong> &mdash; Extracts customer name from "CLG CR:", "NEFT CR-", etc.</li>
+                    <li class="mb-1"><strong>Normalization</strong> &mdash; Trim, ToUpper, remove extra spaces</li>
+                    <li><strong>Save</strong> &mdash; Persists Name + Amount + Original Description to database</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- Recent Sessions History                                            -->
+<!-- ================================================================ -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex align-items-center">
+                <i class="bi bi-clock-history me-2"></i>
+                <h5 class="mb-0 fw-semibold">Recent Sessions</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="recentSessionsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Session #</th>
+                                <th>Upload Date</th>
+                                <th>RERA Records</th>
+                                <th>GST Records</th>
+                                <th>Comparison Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentSessions != null && Model.RecentSessions.Any())
+                            {
+                                foreach (var session in Model.RecentSessions)
+                                {
+                                    int reraCount = session.RERARecords != null ? session.RERARecords.Count : 0;
+                                    int gstCount = session.GSTRecords != null ? session.GSTRecords.Count : 0;
+                                    int resultCount = session.ComparisonResults != null ? session.ComparisonResults.Count : 0;
+
+                                    <tr>
+                                        <td><strong>#@session.Id</strong></td>
+                                        <td>@session.UploadDate.ToString("dd MMM yyyy HH:mm")</td>
+                                        <td>
+                                            @if (reraCount > 0)
+                                            {
+                                                <span class="badge bg-warning text-dark">@reraCount</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">&mdash;</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (gstCount > 0)
+                                            {
+                                                <span class="badge bg-info">@gstCount</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">&mdash;</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (resultCount > 0)
+                                            {
+                                                <span class="badge bg-success">@resultCount results</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Not compared</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                                        <p class="mt-2 mb-0">No sessions yet. Upload your first files above.</p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // Client-side file validation (defense in depth &mdash; server also validates)
+        (function () {
+            var allowedExtensions = ['.xlsx', '.xls'];
+            var maxSizeMB = 10;
+
+            function validateFileInput(inputId, formId) {
+                var input = document.getElementById(inputId);
+                if (!input) return;
+
+                var form = document.getElementById(formId);
+                if (!form) return;
+
+                form.addEventListener('submit', function (e) {
+                    var files = input.files;
+                    if (!files || files.length === 0) {
+                        return; // Let server-side validation handle it
+                    }
+
+                    var file = files[0];
+                    var ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+                    if (allowedExtensions.indexOf(ext) === -1) {
+                        e.preventDefault();
+                        showError(input, 'Only .xlsx and .xls files are allowed.');
+                        return;
+                    }
+
+                    if (file.size > maxSizeMB * 1024 * 1024) {
+                        e.preventDefault();
+                        showError(input, 'File exceeds ' + maxSizeMB + ' MB limit.');
+                        return;
+                    }
+                });
+            }
+
+            function showError(input, message) {
+                // Remove existing error
+                var existing = input.parentElement.querySelector('.client-validation-error');
+                if (existing) existing.remove();
+
+                var errorDiv = document.createElement('div');
+                errorDiv.className = 'text-danger small mt-1 client-validation-error';
+                errorDiv.textContent = message;
+                input.parentElement.appendChild(errorDiv);
+            }
+
+            validateFileInput('reraFile', 'reraUploadForm');
+            validateFileInput('gstFile', 'gstUploadForm');
+        })();
+    </script>
+}
