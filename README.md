@@ -319,8 +319,8 @@ This project demonstrates proficiency in several advanced software engineering p
 **Senior Software Engineer**  
 *Building enterprise-grade financial technology solutions.*
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- GitHub: [@rohanG2607](https://github.com/rohanG2607)
+- LinkedIn: [Rohan Gupta](https://linkedin.com/in/rohan-gupta2607)
 
 ---
 
