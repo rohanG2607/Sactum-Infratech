@@ -212,18 +212,17 @@ The detailed reports interface is split into categorical tabs for focused auditi
 
 ## 📸 Screenshots
 
-*(Replace placeholders with actual project screenshots)*
 
 <details>
 <summary><b>Click to expand Screenshots</b></summary>
 
 | Dashboard Analytics | File Upload Interface |
 |:---:|:---:|
-| <img src="assets/screenshots/dashboard.png" alt="Dashboard Screenshot" width="400"/> | <img src="assets/screenshots/upload.png" alt="Upload Screenshot" width="400"/> |
+| <img src="GSTReraReconciliation\GSTReraReconciliation\asstes\screenshots\dashboard.png" alt="Dashboard Screenshot" width="400"/> | <img src="GSTReraReconciliation\GSTReraReconciliation\asstes\screenshots\upload.png" alt="Upload Screenshot" width="400"/> |
 
 | Reports Module | Exported Excel Analysis |
 |:---:|:---:|
-| <img src="assets/screenshots/reports.png" alt="Reports Screenshot" width="400"/> | <img src="assets/screenshots/analysis.png" alt="Excel Export Screenshot" width="400"/> |
+| <img src="GSTReraReconciliation\GSTReraReconciliation\asstes\screenshots\reports.png" alt="Reports Screenshot" width="400"/> | <img src="GSTReraReconciliation\GSTReraReconciliation\asstes\screenshots\analysis.png" alt="Excel Export Screenshot" width="400"/> |
 
 </details>
 
